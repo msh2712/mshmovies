@@ -71,7 +71,7 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
                 {/* Title */}
                 <h2
 <<<<<<< HEAD
-                  className={`text-2xl md:text-6xl font-title transition-all duration-700 ${
+                  className={`text-3xl md:text-6xl font-title transition-all duration-700 ${
 =======
                   className={`text-3xl md:text-6xl font-title transition-all duration-700 ${
 >>>>>>> b2014b4 (Your commit message here)
