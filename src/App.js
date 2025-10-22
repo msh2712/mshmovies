@@ -5,11 +5,13 @@ import Home from './Component/Home';
 import Showdetaills from './Component/Showdetailss'
 import SearchPage from './Component/SearchPage';
 import LikedMoviesList from './Component/LikedMoviesList';
+import ScrollToTop from './Component/ScrollToTop';
 
 function App() {
   return (
     <Router>
       <div className="w-screen m-0 overflow-hidden flex bg-black  dark:bg-green-50">
+        <ScrollToTop/>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

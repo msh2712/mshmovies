@@ -32,7 +32,7 @@ function BestForKids() {
 
     return (
         <div className="w-screen  bg-black dark:bg-green-50 pt-10 pb-2">
-            <div className="w-[100%] md:w-[89%] ms-0 md:ms-24 h-72 bg-black rounded-lg overflow-hidden relative">
+            <div className="w-[100%] md:w-[89%] ms-0 md:ms-24 h-40 md:h-72 bg-black rounded-lg overflow-hidden relative">
                
                 {!loading && !error && selectedMovie && (
                     <div

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovieById } from './../Reduxtoolkit/fetchMovieById';
+import Heading from './Heading';
 
 const ShowDetails = () => {
     const dispatch = useDispatch();
@@ -39,9 +40,10 @@ const ShowDetails = () => {
             }}
         >
             <div className="absolute inset-0 bg-black dark:bg-green-50 dark:bg-opacity-80 bg-opacity-90"></div>
-
+            <div>
+             <div className=' relative md:hidden m-4 mb-0 opacity-100 text-xl'><Heading heading="LIKED"/></div> 
             <div className="relative md:ps-32 z-10 flex flex-col md:flex-row items-center md:items-start px-6 pb-14 pt-20 md:pt-16 md:px-0 max-w-7xl mx-auto">
-                {/* Poster Image */}
+                
                 <div
                     className={`w-full md:w-1/4 mb-6 md:mr-10 aspect-[2/3] transform transition-all duration-700 ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                         }`}
@@ -107,8 +109,8 @@ const ShowDetails = () => {
                     )}
                 </div>
             </div>
+            </div>
 
-            {/* Trailer Modal */}
             {showTrailer && (
                 <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col">
                     <div className="w-full flex justify-end p-4 z-50">

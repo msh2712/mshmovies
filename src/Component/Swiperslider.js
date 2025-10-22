@@ -70,7 +70,11 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
               <div className="absolute bottom-12 md:bottom-[120px] left-10 md:left-40 text-white max-w-2xl rounded-md">
                 {/* Title */}
                 <h2
+<<<<<<< HEAD
                   className={`text-2xl md:text-6xl font-title transition-all duration-700 ${
+=======
+                  className={`text-3xl md:text-6xl font-title transition-all duration-700 ${
+>>>>>>> b2014b4 (Your commit message here)
                     activeIndex === index
                       ? 'opacity-100 translate-y-0 delay-100'
                       : 'opacity-0 translate-y-5 pointer-events-none'

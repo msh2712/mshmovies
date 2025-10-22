@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
  import { toggleLike } from "../Reduxtoolkit/likedMoviesSlice";
 import { useNavigate } from "react-router-dom"
 import { setMovieId } from "../Reduxtoolkit/fetchMovieById";
+import Heading from "./Heading";
 
 function LikedMoviesList() {
   const likedMovies = useSelector((state) => state.likedMovies.liked);
@@ -22,19 +23,14 @@ function LikedMoviesList() {
 
   if (!likedMovies.length) {
     return  <div className= "dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-      <div className="flex dark:bg-green-50 mb-6 bg-black text-green-50 dark:text-black w-[100%] rounded-lg p-3">
-         <img className='size-10 me-2 md:hidden' src='./MshLogo.png' alt='Logo' />
-      <h2 className="text-xl md:text-2xl font-bold pt-1 md:pt-0 md:ps-5 font-kids">LIKED MOVIES</h2>
-      </div></div>
+            <Heading className="dark:bg-slate-100" heading="LIKED MOVIES"/>
+            <div className="flex h-96 justify-center font-kids items-center">NO DATA LIKED BY YOU</div>
+            </div>
   }
 
   return (
     <div className= "dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-      <div className="flex dark:bg-green-50 mb-6 bg-black text-green-50 dark:text-black w-[100%] rounded-lg p-3">
-         <img className='size-10 me-2 md:hidden' src='./MshLogo.png' alt='Logo' />
-      <h2 className="text-xl md:text-2xl font-bold pt-1 md:pt-0 md:ps-5 font-kids">LIKED MOVIES</h2>
-      </div>
-
+     <Heading heading="LIKED MOVIES" />
       <div className="flex flex-col gap-6">
         {likedMovies.map((movie) => (
           <div
@@ -65,7 +61,7 @@ function LikedMoviesList() {
   View More
 </button>
             <button  onClick={(e) => {
-                    e.stopPropagation(); // prevent slide click navigation
+                    e.stopPropagation(); 
                     handleLikeToggle(movie) }} className="absolute top-3 right-4 ">
              <IoHeartDislike className="size-5 text-red-500 hover:animate-bounce"/>
             </button>
