@@ -3,10 +3,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchTopRatedMovies = createAsyncThunk(
   'topRatedMovies/fetchTopRatedMovies',
-  async (_, thunkAPI) => {
+  async (lang, thunkAPI) => {
+    console.log(lang);
+    
     try {
       const response = await fetch(
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=bf4a036962ea83228b010b427be3d521'
+        `https://api.themoviedb.org/3/discover/movie?api_key=bf4a036962ea83228b010b427be3d521&sort_by=vote_average.desc&with_original_language=${lang}&vote_count.gte=100&language=en`
       );
 
       if (!response.ok) {

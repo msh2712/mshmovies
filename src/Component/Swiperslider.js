@@ -2,39 +2,40 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Autoplay } from 'swiper/modules'
-import { fetchPopularMovies } from '../Reduxtoolkit/PopularMoviesSlice'
+import { fetchUpcomingMovies } from '../Reduxtoolkit/UpcomingSlice'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { FaArrowLeft, FaArrowRight, FaRegCalendarAlt, FaStar } from 'react-icons/fa'
+import Loading from './Loading'
+import { setMovieId } from "../Reduxtoolkit/fetchMovieById";
+import { useNavigate } from 'react-router-dom'
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original'
 
 export default function AnimatedSwiper() {
   const dispatch = useDispatch()
-   const { movies, loading, error } = useSelector((state) => state.popularMovies);
-
+  const { movies: upcoming, loading: upcomingLoad, error: upcomingErr } = useSelector((state) => state.upcoming);
+  const lang = useSelector((state) => state.user.language);
+  
+  const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(0)
   const prevRef = useRef(null)
   const nextRef = useRef(null)
 
   useEffect(() => {
-     dispatch(fetchPopularMovies());
-  }, [dispatch])
+     dispatch(fetchUpcomingMovies(lang));
+  }, [dispatch, lang])
+  
+  const handleShow = (id) => {
+      dispatch(setMovieId(id));
+      localStorage.setItem("selectedMovieId", id); 
+      navigate(`/detaills/${id}`);
+  };
 
-if (loading) return  <div className="loading w-screen h-screen flex justify-center items-center">
-      <svg width="64" height="48" className="w-16 h-12 ">
-        <polyline
-          id="back"
-          points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"
-        ></polyline>
-        <polyline
-          id="front"
-          points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"
-        ></polyline>
-      </svg>
-    </div>
+  if (upcomingLoad) return <Loading/>
+  if (upcomingErr) return <div className="text-red-500 p-5">Error: {upcomingErr}</div>
 
-  if (error) return <div className="text-red-500 p-5">Error: {error}</div>
+  const filteredMovies = upcoming.filter(movie => movie.backdrop_path);
 
   return (
     <div className="relative dark:bg-white">
@@ -57,7 +58,7 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
         }}
         className="overflow-hidden"
       >
-        {movies.slice(4, 10).map((movie, index) => (
+        {filteredMovies.map((movie, index) => (
           <SwiperSlide key={movie.id}>
             <div className="relative h-[400px] sm:h-[500px] md:h-[500px] lg:h-screen">
               <div
@@ -68,7 +69,6 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
               ></div>
 
               <div className="absolute bottom-12 md:bottom-[120px] left-10 md:left-40 text-white max-w-2xl rounded-md">
-                {/* Title */}
                 <h2
                   className={`text-3xl md:text-6xl font-title transition-all duration-700 ${
                     activeIndex === index
@@ -79,7 +79,6 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
                   {movie.title}
                 </h2>
 
-                {/* Release Date */}
                 <div
                   className={`flex items-center space-x-3 transition-all duration-700 ${
                     activeIndex === index
@@ -91,7 +90,6 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
                   <p className="text-lg font-title md:text-xl">{movie.release_date}</p>
                 </div>
 
-                {/* Rating */}
                 <div
                   className={`flex items-center space-x-2 mb-2 md:mb-4 transition-all duration-700 ${
                     activeIndex === index
@@ -103,8 +101,8 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
                   <p className="text-lg pl-1 font-title md:text-xl">{movie.vote_average}</p>
                 </div>
 
-                {/* Button */}
                 <button
+                  onClick={() => handleShow(movie.id)}
                   type="button"
                   className={`bg-yellow-500 text-black font-kids px-5 py-2 rounded-md hover:bg-yellow-500 transition text-sm md:text-xl hover:animate-pulse transition-all duration-700 ${
                     activeIndex === index
@@ -112,7 +110,7 @@ if (loading) return  <div className="loading w-screen h-screen flex justify-cent
                       : 'opacity-0 translate-y-5 pointer-events-none'
                   }`}
                 >
-                  Trailer
+                  View More
                 </button>
               </div>
             </div>

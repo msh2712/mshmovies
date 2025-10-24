@@ -1,31 +1,27 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchPopularMovies = createAsyncThunk(
-  'popularMovies/fetchPopularMovies',
+export const fetchMostWatchMovies = createAsyncThunk(
+  'mostWatchMovies/fetchMostWatchMovies',
   async (lang, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=bf4a036962ea83228b010b427be3d521&with_original_language=${lang}&sort_by=popularity.desc`
-        
-
+        `https://api.themoviedb.org/3/discover/movie?api_key=bf4a036962ea83228b010b427be3d521&with_genres=16&with_original_language=${lang}&sort_by=popularity.desc`
       );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch popular movies');
+        throw new Error('Failed to fetch most watched movies');
       }
 
       const data = await response.json();
       return data.results;
-      console.log(data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-const PopularMoviesSlice = createSlice({
-  name: 'popularMovies',
+const mostWatchMoviesSlice = createSlice({
+  name: 'mostWatchMovies',
   initialState: {
     movies: [],
     loading: false,
@@ -34,19 +30,19 @@ const PopularMoviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPopularMovies.pending, (state) => {
+      .addCase(fetchMostWatchMovies.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPopularMovies.fulfilled, (state, action) => {
+      .addCase(fetchMostWatchMovies.fulfilled, (state, action) => {
         state.loading = false;
         state.movies = action.payload;
       })
-      .addCase(fetchPopularMovies.rejected, (state, action) => {
+      .addCase(fetchMostWatchMovies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export default PopularMoviesSlice.reducer;
+export default mostWatchMoviesSlice.reducer;

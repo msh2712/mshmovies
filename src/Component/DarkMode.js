@@ -35,3 +35,6 @@ function DarkMode() {
 }
 
 export default DarkMode;
+
+// https://api.themoviedb.org/3/discover/movie?api_key=bf4a036962ea83228b010b427be3d521&with_original_language=hi&with_genres=35&language=en-US&page=1
+

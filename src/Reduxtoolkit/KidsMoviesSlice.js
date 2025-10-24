@@ -1,20 +1,28 @@
 // src/Reduxtoolkit/KidsMoviesSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_URL = 'https://api.themoviedb.org/3/tv/popular?api_key=bf4a036962ea83228b010b427be3d521';
 
 export const fetchKidsMovies = createAsyncThunk(
   'kids/fetchKidsMovies',
-  async (_, thunkAPI) => {
+  async (lang, thunkAPI) => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=bf4a036962ea83228b010b427be3d521&with_original_language=${lang}&with_genres=28`);
+
+      // Check if response is OK (status in the 200-299 range)
+      if (!response.ok) {
+        // You can provide a more detailed error message including status
+        throw new Error(`Failed to fetch kids movies: ${response.status} ${response.statusText}`);
+      }
+
       const data = await response.json();
       return data.results;
     } catch (error) {
+      // Pass error message to rejected action
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
 
 const KidsMoviesSlice = createSlice({
   name: 'kids',

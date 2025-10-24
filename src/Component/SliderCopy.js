@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setMovieId } from "../Reduxtoolkit/fetchMovieById";
 import { toggleLike } from "../Reduxtoolkit/likedMoviesSlice";
+import Loading from "./Loading";
+import { toast } from "react-toastify";
 
 function SliderCopy({ title, movies, loading, error }) {
   const prevRef = useRef(null);
@@ -17,28 +19,32 @@ function SliderCopy({ title, movies, loading, error }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Get liked movies from Redux state
   const likedMovies = useSelector((state) => state.likedMovies.liked);
 
-  // Check if a movie is liked by its id
   const isMovieLiked = (movieId) => likedMovies.some((m) => m.id === movieId);
 
-  // Toggle like/unlike a movie
   const handleLikeToggle = (movie) => {
+    const alreadyLiked = isMovieLiked(movie.id);
     dispatch(toggleLike(movie));
+
+    if (alreadyLiked) {
+      toast.error(`${movie.title || movie.name} removed from FAVORITES`);
+    } else {
+      toast.success(`${movie.title || movie.name} added to FAVORITES`);
+    }
   };
 
   const handleShow = (id) => {
     dispatch(setMovieId(id));
-    localStorage.setItem("selectedMovieId", id); // you can keep this for your own logic
-     navigate(`/detaills/${id}`);
+    localStorage.setItem("selectedMovieId", id);
+    navigate(`/detaills/${id}`);
   };
 
-  if (loading) return <p className="text-white px-6">Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p className="text-red-500 px-6">Error: {error}</p>;
 
   return (
-    <div className="bg-black  dark:bg-green-50 text-white dark:text-black ps-0 md:ps-16 pr-0 md:pr-4 relative">
+    <div className="bg-black dark:bg-green-50 text-white dark:text-black ps-0 md:ps-16 pr-0 md:pr-4 relative">
       {movies && (
         <h2 className="text-2xl md:text-4xl font-title p-5 md:p-8">
           {title} <span className="text-red-500">MOVIES</span>
@@ -75,14 +81,12 @@ function SliderCopy({ title, movies, loading, error }) {
               >
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
                   className="w-full h-72 md:h-80 rounded-2xl object-cover transition-all duration-300 group-hover:grayscale"
                 />
 
-                {/* Like Button */}
                 <div
                   onClick={(e) => {
-                    e.stopPropagation(); // prevent slide click navigation
+                    e.stopPropagation();
                     handleLikeToggle(movie);
                   }}
                   className="absolute right-4 top-4 text-xl cursor-pointer z-50"

@@ -1,36 +1,39 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
- import { IoHeartDislike } from "react-icons/io5";
- import { toggleLike } from "../Reduxtoolkit/likedMoviesSlice";
+import { IoHeartDislike } from "react-icons/io5";
+import { toggleLike } from "../Reduxtoolkit/likedMoviesSlice";
 import { useNavigate } from "react-router-dom"
 import { setMovieId } from "../Reduxtoolkit/fetchMovieById";
 import Heading from "./Heading";
+import { toast } from "react-toastify";
+
 
 function LikedMoviesList() {
   const likedMovies = useSelector((state) => state.likedMovies.liked);
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-   const handleLikeToggle = (movie) => {
-      dispatch(toggleLike(movie));
-    };
+  const handleLikeToggle = (movie) => {
+    dispatch(toggleLike(movie));
+    toast.error(`${movie.title || movie.name} removed from FAVORITES`);
+  };
 
-     const handleShow = (id) => {
-        dispatch(setMovieId(id));
-        localStorage.setItem("selectedMovieId", id); // you can keep this for your own logic
-        navigate(`/detaills/${id}`);
-      };
+  const handleShow = (id) => {
+    dispatch(setMovieId(id));
+    localStorage.setItem("selectedMovieId", id);
+    navigate(`/detaills/${id}`);
+  };
 
   if (!likedMovies.length) {
-    return  <div className= "dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-            <Heading className="dark:bg-slate-100" heading="LIKED MOVIES"/>
-            <div className="flex h-96 justify-center font-kids items-center">NO DATA LIKED BY YOU</div>
-            </div>
+    return <div className="dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
+      <Heading className="dark:bg-slate-100" heading="LIKED MOVIES" />
+      <div className="flex h-96 justify-center font-kids items-center">NO DATA LIKED BY YOU</div>
+    </div>
   }
 
   return (
-    <div className= "dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-     <Heading heading="LIKED MOVIES" />
+    <div className="dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
+      <Heading heading="FAVORITES MOVIES" />
       <div className="flex flex-col gap-6">
         {likedMovies.map((movie) => (
           <div
@@ -56,15 +59,16 @@ function LikedMoviesList() {
                 Rating: {movie.vote_average || "N/A"}
               </p>
               <button
-               onClick={() => handleShow(movie.id)}
+                onClick={() => handleShow(movie.id)}
                 className="bg-yellow-500 text-black font-kids px-4 py-2 rounded-md hover:bg-yellow-400 transition-all duration-300 text-xs md:text-base w-fit mt-2 hover:animate-pulse">
-  View More
-</button>
-            <button  onClick={(e) => {
-                    e.stopPropagation(); 
-                    handleLikeToggle(movie) }} className="absolute top-3 right-4 ">
-             <IoHeartDislike className="size-5 text-red-500 hover:animate-bounce"/>
-            </button>
+                View More
+              </button>
+              <button onClick={(e) => {
+                e.stopPropagation();
+                handleLikeToggle(movie)
+              }} className="absolute top-3 right-4 ">
+                <IoHeartDislike className="size-5 text-red-500 hover:animate-bounce" />
+              </button>
 
             </div>
           </div>

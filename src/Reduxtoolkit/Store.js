@@ -1,5 +1,3 @@
-// store.js or wherever you configure Redux store
-
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import {
   persistStore,
@@ -16,19 +14,29 @@ import storage from 'redux-persist/lib/storage';
 import UpcomingReducer from './../Reduxtoolkit/UpcomingSlice';
 import PopularMoviesReducer from './../Reduxtoolkit/PopularMoviesSlice';
 import topRatedMoviesReducer from './../Reduxtoolkit/fetchTopRatedMovies';
-import mostWatchMoviesReducer from './../Reduxtoolkit/MostWarchMoviesSlice';
+import mostWatchMoviesReducer from './../Reduxtoolkit/CartoonMoviesSlice';
 import KidsMoviesReducer from './../Reduxtoolkit/KidsMoviesSlice';
 import movieReducer from './../Reduxtoolkit/fetchMovieById';
 import likedMoviesReducer from './../Reduxtoolkit/likedMoviesSlice';
-import sidebarReducer from './../Reduxtoolkit/sidebarSlice'
+import sidebarReducer from './../Reduxtoolkit/sidebarSlice';
+import UpcomingBollywoodReducer from './Tvshows';
+import userReducer from './../Reduxtoolkit/userSlice'; // <-- Import user slice
+import SRKMoviesreducer from './SRKMoviesSlice'
 
-// Only persist likedMovies
 const likedMoviesPersistConfig = {
   key: 'likedMovies',
   storage,
 };
 
+const userPersistConfig = {
+  key: 'user',
+  storage,
+  whitelist: ['users', 'currentUser', 'language', 'isAuthenticated'], 
+};
+
+
 const rootReducer = combineReducers({
+  upcomingBollywood: UpcomingBollywoodReducer,
   upcoming: UpcomingReducer,
   popularMovies: PopularMoviesReducer,
   topRatedMovies: topRatedMoviesReducer,
@@ -36,8 +44,9 @@ const rootReducer = combineReducers({
   kids: KidsMoviesReducer,
   movie: movieReducer,
   likedMovies: persistReducer(likedMoviesPersistConfig, likedMoviesReducer),
-
-  sidebar: sidebarReducer, // ✅ added here
+  sidebar: sidebarReducer,
+  user: persistReducer(userPersistConfig, userReducer), 
+  srk : SRKMoviesreducer 
 });
 
 const Store = configureStore({

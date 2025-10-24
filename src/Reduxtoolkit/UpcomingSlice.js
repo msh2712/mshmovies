@@ -1,16 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const API_KEY = 'bf4a036962ea83228b010b427be3d521';
-const API_URL = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`;
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+
+// Calculate last 10 days range
+const today = new Date();
+const past10Days = new Date();
+past10Days.setDate(today.getDate() - 10);
+
+const formatDate = (date) => date.toISOString().split("T")[0];
 
 export const fetchUpcomingMovies = createAsyncThunk(
   'upcoming/fetchUpcomingMovies',
-  async (_, thunkAPI) => {
+  async (lang, thunkAPI) => {
     try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      return data.results; 
+      let allMovies = [];
+      let page = 1;
+      const totalPages = 2; // To cover roughly 40 movies if 20 per page
+
+      while (page <= totalPages) {
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&primary_release_date.gte=${formatDate(past10Days)}&primary_release_date.lte=${formatDate(today)}&sort_by=primary_release_date.asc&page=${page}`);
+        const data = await response.json();
+        allMovies = allMovies.concat(data.results);
+        page++;
+      }
+
+      return allMovies; 
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
