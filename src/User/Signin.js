@@ -25,7 +25,6 @@ function Signin() {
   };
 
   const validatePassword = (pwd) => {
-    // Password must have 6+ characters, a letter, a number, and a special char
     const lengthCheck = pwd.length >= 6;
     const letterCheck = /[a-zA-Z]/.test(pwd);
     const numberCheck = /[0-9]/.test(pwd);
@@ -81,15 +80,17 @@ function Signin() {
   };
 
   return (
-    <div className="relative h-screen w-full flex items-center justify-end md:pe-28 md:ps-28 p-4 overflow-hidden">
+    <div className="relative min-h-screen w-full flex items-center justify-center md:justify-end p-4">
+      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-80 z-0" />
+      <div className="absolute inset-0 bg-black bg-opacity-80" />
 
-      <div className="relative z-10 w-full max-w-md p-8">
+      {/* Form container */}
+      <div className="relative z-10 w-full max-w-md p-6 md:p-8">
         <h2 className="text-3xl font-semibold font-kids mb-6 ps-3 text-white">
           Sign <span className="animate-colorChange">In</span>
         </h2>
@@ -160,9 +161,15 @@ function Signin() {
               Password must be at least 6 characters and include a letter, number, and special character.
             </p>
           )}
-          <div className="flex justify-end pr-6 w-auto  items-start ps-5 space-x-2  ">
-          <Link to='/signup'><span className="cursor-pointer font-des font-semibold text-gray-400 hover:text-yellow-400">Sign Up</span></Link> 
+
+          <div className="flex justify-end pr-6 w-auto items-start ps-5 space-x-2">
+            <Link to="/signup">
+              <span className="cursor-pointer font-des font-semibold text-gray-400 hover:text-yellow-400">
+                Sign Up
+              </span>
+            </Link>
           </div>
+
           <button
             type="submit"
             className="w-full bg-yellow-400 font-kids py-3 rounded-full hover:bg-yellow-300 transition"
