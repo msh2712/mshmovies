@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addUser } from "../redux/userSlice"; // example action
 
-function Signup() {
+function CreateAccount() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.users);
+  const users = useSelector((state) => state.user.users); 
 
   const [showPassword, setShowPassword] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [usernameValid, setUsernameValid] = useState(null);
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(null);
-
+  const [emailExists, setEmailExists] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(null);
+  const [agree, setAgree] = useState(false);
 
-  // ---------------- Validation functions ----------------
+  const validateUsername = (name) => name.trim() !== "" && !/\s/.test(name);
+
   const validateEmail = (email) => {
     const basicValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const domainValid = email.toLowerCase().endsWith("@gmail.com");
@@ -34,12 +35,34 @@ function Signup() {
     return lengthCheck && letterCheck && numberCheck && specialCharCheck;
   };
 
-  // ---------------- Handlers ----------------
+  // --- HANDLERS ---
+  const handleUsernameChange = (e) => {
+    const input = e.target.value;
+    setUsername(input);
+    setUsernameValid(validateUsername(input));
+  };
+
   const handleEmailChange = (e) => {
     const input = e.target.value.toLowerCase();
     setEmail(input);
+
+    if (input === "") {
+      setEmailValid(null);
+      return;
+    }
+
     setEmailValid(validateEmail(input));
+
+    // Check in Redux users array
+    const exists = users.some((user) => user.email.toLowerCase() === input);
+    setEmailExists(exists);
   };
+
+  useEffect(() => {
+    if (emailExists) {
+      toast.error("User already exists!");
+    }
+  }, [emailExists]);
 
   const handlePasswordChange = (e) => {
     const input = e.target.value;
@@ -50,56 +73,83 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      toast.error("Please fill all fields.");
+    if (!username || !email || !password || !agree) {
+      toast.warn("Please fill all fields!");
       return;
     }
 
-    if (!emailValid) {
-      toast.error("Enter a valid email (must end with @gmail.com).");
+    if (!usernameValid) {
+      alert("Please enter a valid username (no spaces, not empty).");
+      return;
+    }
+
+    if (emailExists) {
+      toast.error("Email already exists!");
       return;
     }
 
     if (!passwordValid) {
-      toast.error(
-        "Password must be at least 6 characters and include a letter, number, and special character."
+      alert(
+        "Password must have at least 6 characters, one letter, one number, and one special character."
       );
       return;
     }
 
-    const userExists = users.some((u) => u.email.toLowerCase() === email);
-    if (userExists) {
-      toast.error("User already exists!");
-      return;
-    }
+    // Save user data in localStorage (as temp data)
+    const userData = { username, email, password };
+    localStorage.setItem("tempUserData", JSON.stringify(userData));
 
-    dispatch(addUser({ email, password }));
-    toast.success("Signup successful!");
+    toast.success("User created successfully!");
     setTimeout(() => {
-      navigate("/signin");
+      navigate("/userintrest");
     }, 1500);
   };
 
   return (
     <div
-      className="relative w-full flex items-center justify-center md:justify-end p-4"
-      style={{ height: "100dvh" }} // dynamic viewport height to avoid scroll
+      className="relative w-full flex items-center justify-start md:ps-28 p-4"
+      style={{ height: "100dvh", overflow: "hidden" }}
     >
-      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
       />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-80" />
+      <div className="absolute inset-0 bg-black bg-opacity-80 z-0" />
 
-      {/* Form container */}
-      <div className="relative z-10 w-full max-w-md p-6 md:p-8">
+      <div className="relative z-10 w-full max-w-md p-8">
         <h2 className="text-3xl font-semibold font-kids mb-6 ps-3 text-white">
           Sign <span className="animate-colorChange">Up</span>
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Username */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Enter username"
+              value={username}
+              onChange={handleUsernameChange}
+              className={`w-full p-3 ps-6 font-des bg-black border ${
+                usernameValid === false
+                  ? "border-red-500"
+                  : usernameValid
+                  ? "border-green-500"
+                  : "border-gray-700"
+              } rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
+                usernameValid === false
+                  ? "focus:ring-red-500"
+                  : usernameValid
+                  ? "focus:ring-green-500"
+                  : "focus:ring-yellow-400"
+              }`}
+            />
+          </div>
+          {username && usernameValid === false && (
+            <p className="text-red-500 ps-2 text-sm font-medium">
+              Username cannot be empty or contain spaces.
+            </p>
+          )}
+
           {/* Email */}
           <div className="relative">
             <input
@@ -108,13 +158,17 @@ function Signup() {
               value={email}
               onChange={handleEmailChange}
               className={`w-full p-3 ps-6 font-des bg-black border ${
-                emailValid === false
+                emailExists
+                  ? "border-red-500"
+                  : emailValid === false
                   ? "border-red-500"
                   : emailValid
                   ? "border-green-500"
                   : "border-gray-700"
               } rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
-                emailValid === false
+                emailExists
+                  ? "focus:ring-red-500"
+                  : emailValid === false
                   ? "focus:ring-red-500"
                   : emailValid
                   ? "focus:ring-green-500"
@@ -122,13 +176,16 @@ function Signup() {
               } pr-10`}
             />
             <span className="absolute right-4 top-3.5 text-xl">
-              {email && emailValid && <FaCheckCircle className="text-green-500" />}
-              {email && emailValid === false && <FaTimesCircle className="text-red-500" />}
+              {email && emailExists && <FaTimesCircle className="text-red-500" />}
+              {email && emailValid && !emailExists && (
+                <FaCheckCircle className="text-green-500" />
+              )}
             </span>
           </div>
-          {email && emailValid === false && (
+
+          {email && !emailValid && (
             <p className="text-red-500 ps-2 text-sm font-medium">
-              Enter a valid Gmail address.
+              Please enter a valid Gmail address.
             </p>
           )}
 
@@ -160,23 +217,34 @@ function Signup() {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+
           {password && passwordValid === false && (
             <p className="text-red-500 ps-2 text-sm font-medium">
-              Password must be at least 6 characters and include a letter, number, and special character.
+              Password must include a letter, number, and special character.
             </p>
           )}
 
-          <div className="flex justify-end pr-6 w-auto items-start ps-5 space-x-2">
-            <Link to="/signin">
-              <span className="cursor-pointer font-des font-semibold text-gray-400 hover:text-yellow-400">
+          {/* Agree */}
+          <div className="flex justify-between items-start ps-5 space-x-2 font-semibold text-gray-400 text-sm">
+            <div className="flex">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                className="mt-1 me-2 accent-yellow-400"
+              />
+              <span className="text-gray-600">Remember me</span>
+            </div>
+            <Link to="/">
+              <div className="pe-8 font-des text-base cursor-pointer hover:text-yellow-400">
                 Sign In
-              </span>
+              </div>
             </Link>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-yellow-400 font-kids py-3 rounded-full hover:bg-yellow-300 transition"
+            className="w-full bg-yellow-400 font-kids text-black py-3 rounded-full hover:bg-yellow-300 transition"
           >
             Sign Up
           </button>
@@ -188,4 +256,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default CreateAccount;
