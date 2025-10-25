@@ -42,7 +42,6 @@ function UserInterest() {
     const userObj = { ...userData, language: label };
 
     try {
-      toast.success("Interest selected successfully!");
       dispatch(signupUser(userObj));
       setTimeout(() => navigate("/Home"), 1500);
     } catch (error) {
@@ -54,8 +53,8 @@ function UserInterest() {
     { id: "hindi", label: "hi", img: "/Poster/hindi.jpg" },
     { id: "english", label: "en", img: "/Poster/english.jpg" },
     { id: "japanese", label: "ja", img: "/Poster/japanies.jpg" },
-    { id: "chinese", label: "zh", img: "/Poster/chinese.jpg" },
-    { id: "korean", label: "ko", img: "/Poster/korean.jpg" },
+    { id: "chinese", label: "zh", img: "/Poster/Chinese.jpg" },
+    { id: "korean", label: "ko", img: "/Poster/Korean.jpg" },
     { id: "arabic", label: "ar", img: "/Poster/arab.jpg" },
     { id: "spanish", label: "es", img: "/Poster/spanish.jpeg" },
     { id: "french", label: "fr", img: "/Poster/french.jpg" },

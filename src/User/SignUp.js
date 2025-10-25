@@ -111,7 +111,7 @@ function CreateAccount() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-start md:ps-28 p-4 overflow-hidden">
+    <div className="relative h-screen w-full flex items-center justify-start md:ps-28 p-4 overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
@@ -120,7 +120,7 @@ function CreateAccount() {
 
       <div className="relative z-10 w-full max-w-md p-8">
         <h2 className="text-3xl font-semibold font-kids mb-6 ps-3 text-white">
-          Create account
+          Sign <span className="animate-colorChange">Up</span>
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -61,7 +61,7 @@ const ShowDetails = () => {
                             src={
                                 movieData.poster_path
                                     ? `https://image.tmdb.org/t/p/w500${movieData.poster_path}`
-                                    : '/hindi.jpg'  // path to local image in public folder
+                                    : '/generic-movie-poster.jpg'  // path to local image in public folder
                             }
                             alt={movieData.title || 'Movie poster'}
                             className="rounded-lg shadow-lg w-full h-full object-cover"

@@ -80,9 +80,14 @@ function SliderCopy({ title, movies, loading, error }) {
                 className="group relative rounded-2xl transition-all duration-300 cursor-pointer hover:scale-105"
               >
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      : "/generic-movie-poster.jpg" 
+                  }
                   className="w-full h-72 md:h-80 rounded-2xl object-cover transition-all duration-300 group-hover:grayscale"
                 />
+
 
                 <div
                   onClick={(e) => {

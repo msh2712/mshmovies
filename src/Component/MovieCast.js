@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Loading from './Loading';
 
 const MovieCast = ({ selectedMovieId, animate }) => {
   const [cast, setCast] = useState([]);
@@ -27,9 +28,9 @@ const MovieCast = ({ selectedMovieId, animate }) => {
   }, [movieId]);
 
   if (loading)
-    return <p className="text-center text-gray-500 mt-10">Loading cast...</p>;
+    return <Loading/>
   if (!cast.length)
-    return <p className="text-center text-gray-500 mt-10">No cast found.</p>;
+    return <p className="text-center text-gray-500 mt-10"></p>;
 
   return (
     <div
