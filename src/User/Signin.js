@@ -80,7 +80,10 @@ function Signin() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center md:justify-end p-4">
+    <div
+      className="relative w-full flex items-center justify-center md:justify-end p-4"
+      style={{ height: "100dvh" }} // dynamic viewport height to avoid scroll
+    >
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
