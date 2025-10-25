@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
@@ -10,96 +10,97 @@ function Signin() {
   const users = useSelector((state) => state.user.users);
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(null);
-
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(null);
 
-  // ---------------- Validation functions ----------------
-  const validateEmail = (email) => {
+  const validateEmail = useCallback((email) => {
     const basicValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const domainValid = email.toLowerCase().endsWith("@gmail.com");
     return basicValid && domainValid;
-  };
+  }, []);
 
-  const validatePassword = (pwd) => {
+  const validatePassword = useCallback((pwd) => {
     const lengthCheck = pwd.length >= 6;
     const letterCheck = /[a-zA-Z]/.test(pwd);
     const numberCheck = /[0-9]/.test(pwd);
     const specialCharCheck = /[@#$%^&*!]/.test(pwd);
     return lengthCheck && letterCheck && numberCheck && specialCharCheck;
-  };
+  }, []);
 
-  // ---------------- Handlers ----------------
-  const handleEmailChange = (e) => {
-    const input = e.target.value.toLowerCase();
-    setEmail(input);
-    setEmailValid(validateEmail(input));
-  };
+  const handleEmailChange = useCallback(
+    (e) => {
+      const input = e.target.value.toLowerCase();
+      setEmail(input);
+      setEmailValid(validateEmail(input));
+    },
+    [validateEmail]
+  );
 
-  const handlePasswordChange = (e) => {
-    const input = e.target.value;
-    setPassword(input);
-    setPasswordValid(validatePassword(input));
-  };
+  const handlePasswordChange = useCallback(
+    (e) => {
+      const input = e.target.value;
+      setPassword(input);
+      setPasswordValid(validatePassword(input));
+    },
+    [validatePassword]
+  );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    if (!email || !password) {
-      toast.error("Please fill all fields.");
-      return;
-    }
+      if (!email || !password) {
+        toast.error("Please fill all fields.");
+        return;
+      }
 
-    if (!emailValid) {
-      toast.error("Enter a valid email (must end with @gmail.com).");
-      return;
-    }
+      if (!emailValid) {
+        toast.error("Enter a valid email (must end with @gmail.com).");
+        return;
+      }
 
-    if (!passwordValid) {
-      toast.error(
-        "Password must be at least 6 characters and include a letter, number, and special character."
+      if (!passwordValid) {
+        toast.error(
+          "Password must be at least 6 characters and include a letter, number, and special character."
+        );
+        return;
+      }
+
+      const user = users.find(
+        (u) => u.email.toLowerCase() === email && u.password === password
       );
-      return;
-    }
 
-    const user = users.find(
-      (u) => u.email.toLowerCase() === email && u.password === password
-    );
-
-    if (user) {
-      toast.success("Login successful!");
-      setTimeout(() => {
-        navigate("/Home");
-      }, 1500);
-    } else {
-      toast.error("Email or password do not match!");
-    }
-  };
+      if (user) {
+        toast.success("Login successful!");
+        setTimeout(() => {
+          navigate("/Home");
+        }, 1500);
+      } else {
+        toast.error("Email or password do not match!");
+      }
+    },
+    [email, password, emailValid, passwordValid, users, navigate]
+  );
 
   return (
     <div
       className="relative w-full flex items-center justify-center md:justify-end p-4"
-      style={{ height: "100dvh" }} // dynamic viewport height to avoid scroll
+      style={{ height: "100dvh" }}
     >
-      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
       />
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-80" />
 
-      {/* Form container */}
-      <div className="relative z-10 w-full max-w-md p-6 md:p-8">
+      <div className="relative z-10 w-full max-w-md p-6 md:mr-20 md:p-8">
         <h2 className="text-3xl font-semibold font-kids mb-6 ps-3 text-white">
           Sign <span className="animate-colorChange">In</span>
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email */}
           <div className="relative">
             <input
               type="email"
@@ -131,7 +132,6 @@ function Signin() {
             </p>
           )}
 
-          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -153,7 +153,7 @@ function Signin() {
               } pr-10`}
             />
             <span
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-4 top-3.5 text-yellow-400 cursor-pointer text-xl"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}

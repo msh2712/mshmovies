@@ -26,7 +26,7 @@ function LikedMoviesList() {
 
   if (!likedMovies.length) {
     return <div className="dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-      <Heading className="dark:bg-slate-100" heading="FAVOURITES MOVIES" />
+      <Heading className="dark:bg-slate-100" heading="LIKED MOVIES" />
       <div className="flex h-96 justify-center font-kids items-center">NOT ANY MOVIES LIKED BY YOU</div>
     </div>
   }

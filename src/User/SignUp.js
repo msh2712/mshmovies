@@ -35,7 +35,6 @@ function CreateAccount() {
     return lengthCheck && letterCheck && numberCheck && specialCharCheck;
   };
 
-  // --- HANDLERS ---
   const handleUsernameChange = (e) => {
     const input = e.target.value;
     setUsername(input);
@@ -53,7 +52,6 @@ function CreateAccount() {
 
     setEmailValid(validateEmail(input));
 
-    // Check in Redux users array
     const exists = users.some((user) => user.email.toLowerCase() === input);
     setEmailExists(exists);
   };
@@ -74,7 +72,7 @@ function CreateAccount() {
     e.preventDefault();
 
     if (!username || !email || !password || !agree) {
-      toast.warn("Please fill all fields!");
+     toast.error("Please fill all fields.");
       return;
     }
 
@@ -95,7 +93,6 @@ function CreateAccount() {
       return;
     }
 
-    // Save user data in localStorage (as temp data)
     const userData = { username, email, password };
     localStorage.setItem("tempUserData", JSON.stringify(userData));
 
@@ -122,7 +119,6 @@ function CreateAccount() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username */}
           <div className="relative">
             <input
               type="text"
@@ -150,7 +146,6 @@ function CreateAccount() {
             </p>
           )}
 
-          {/* Email */}
           <div className="relative">
             <input
               type="email"
@@ -189,7 +184,6 @@ function CreateAccount() {
             </p>
           )}
 
-          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -224,7 +218,6 @@ function CreateAccount() {
             </p>
           )}
 
-          {/* Agree */}
           <div className="flex justify-between items-start ps-5 space-x-2 font-semibold text-gray-400 text-sm">
             <div className="flex">
               <input

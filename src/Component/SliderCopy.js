@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -21,24 +21,42 @@ function SliderCopy({ title, movies, loading, error }) {
 
   const likedMovies = useSelector((state) => state.likedMovies.liked);
 
-  const isMovieLiked = (movieId) => likedMovies.some((m) => m.id === movieId);
+  // Memoized set of liked movie IDs for faster lookup
+  const likedMovieIds = useMemo(
+    () => new Set(likedMovies.map((m) => m.id)),
+    [likedMovies]
+  );
 
-  const handleLikeToggle = (movie) => {
-    const alreadyLiked = isMovieLiked(movie.id);
-    dispatch(toggleLike(movie));
+  // Memoized function to check if a movie is liked
+  const isMovieLiked = useCallback(
+    (movieId) => likedMovieIds.has(movieId),
+    [likedMovieIds]
+  );
 
-    if (alreadyLiked) {
-      toast.error(`${movie.title || movie.name} removed from FAVORITES`);
-    } else {
-      toast.success(`${movie.title || movie.name} added to FAVORITES`);
-    }
-  };
+  // Memoized like toggle handler
+  const handleLikeToggle = useCallback(
+    (movie) => {
+      const alreadyLiked = isMovieLiked(movie.id);
+      dispatch(toggleLike(movie));
 
-  const handleShow = (id) => {
-    dispatch(setMovieId(id));
-    localStorage.setItem("selectedMovieId", id);
-    navigate(`/detaills/${id}`);
-  };
+      if (alreadyLiked) {
+        toast.error(`${movie.title || movie.name} removed from Like Movies`);
+      } else {
+        toast.success(`${movie.title || movie.name} added to Like Movies`);
+      }
+    },
+    [dispatch, isMovieLiked]
+  );
+
+  // Memoized show handler
+  const handleShow = useCallback(
+    (id) => {
+      dispatch(setMovieId(id));
+      localStorage.setItem("selectedMovieId", id);
+      navigate(`/detaills/${id}`);
+    },
+    [dispatch, navigate]
+  );
 
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500 px-6">Error: {error}</p>;
@@ -83,11 +101,10 @@ function SliderCopy({ title, movies, loading, error }) {
                   src={
                     movie.poster_path
                       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                      : "/generic-movie-poster.jpg" 
+                      : "/generic-movie-poster.jpg"
                   }
                   className="w-full h-72 md:h-80 rounded-2xl object-cover transition-all duration-300 group-hover:grayscale"
                 />
-
 
                 <div
                   onClick={(e) => {
@@ -104,7 +121,6 @@ function SliderCopy({ title, movies, loading, error }) {
                   )}
                 </div>
 
-                {/* Movie Title Overlay */}
                 <div className="absolute inset-0 flex items-end justify-center p-4 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/90">
                   <h3 className="text-center text-white text-lg font-des drop-shadow-md">
                     {movie.title || movie.name}
@@ -115,7 +131,6 @@ function SliderCopy({ title, movies, loading, error }) {
           ))}
         </Swiper>
 
-        {/* Navigation Arrows */}
         <div
           ref={prevRef}
           className="hidden md:flex items-center justify-center absolute z-50 top-1/2 -translate-y-1/2 left-6 w-10 h-10 bg-black/50 text-white rounded-full cursor-pointer hover:bg-black"
@@ -133,4 +148,5 @@ function SliderCopy({ title, movies, loading, error }) {
   );
 }
 
-export default SliderCopy;
+// Wrap component with React.memo for memoization
+export default React.memo(SliderCopy);
