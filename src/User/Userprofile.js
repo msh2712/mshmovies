@@ -55,7 +55,7 @@ const Userprofile = () => {
                     <p className="text-l g sm:text-xl  font-des max-w-lg mx-auto md:mx-0">
                         {users} interested to watching {languageName} movies.
                     </p>
-                    <hr className="mt-4 w-96 mx-auto md:mx-0 dark:border-stone-950" />
+                    <hr className="mt-4  w-80 md:w-96 mx-auto md:mx-0 dark:border-stone-950" />
                     <p className="text-lg animate-colorChange  dark:animate-none sm:text-xl my-2 font-kids max-w-lg mx-auto md:mx-0">
                         WEBSITE INFORMATION
                     </p>
