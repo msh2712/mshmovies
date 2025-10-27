@@ -65,7 +65,7 @@ function SliderCopy({ title, movies, loading, error }) {
     <div className="bg-black dark:bg-green-50 text-white dark:text-black ps-0 md:ps-16 pr-0 md:pr-4 relative">
       {movies && (
         <h2 className="text-2xl md:text-4xl font-title p-5 md:p-8">
-          {title} <span className="text-red-500">MOVIES</span>
+          {title} <span className="text-red-500 ">MOVIES</span>
         </h2>
       )}
 

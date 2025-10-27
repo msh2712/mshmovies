@@ -90,7 +90,7 @@ function Signin() {
       style={{ height: "100dvh" }}
     >
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-80" />

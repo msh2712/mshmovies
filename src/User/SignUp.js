@@ -19,7 +19,7 @@ function CreateAccount() {
   const [passwordValid, setPasswordValid] = useState(null);
   const [agree, setAgree] = useState(false);
 
-  const validateUsername = (name) => name.trim() !== "" && !/\s/.test(name);
+ const validateUsername = (name) => name.trim() !== "";
 
   const validateEmail = (email) => {
     const basicValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -108,7 +108,7 @@ function CreateAccount() {
       style={{ height: "100dvh", overflow: "hidden" }}
     >
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/netflix image.jpg')" }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-80 z-0" />

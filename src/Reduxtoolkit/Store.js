@@ -31,7 +31,7 @@ const likedMoviesPersistConfig = {
 const userPersistConfig = {
   key: 'user',
   storage,
-  whitelist: ['users', 'currentUser', 'language', 'isAuthenticated'], 
+  whitelist: ['users',  'usernames', 'currentUser', 'language', 'isAuthenticated'], 
 };
 
 

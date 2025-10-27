@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Signin from './User/Signin';
 import ProtectedRoute from './User/ProtectedRoute';
 import Layout from './User/Layout';
+import Userprofile from './User/Userprofile';
 
 const Home = lazy(() => import('./Component/Home'));
 const Showdetaills = lazy(() => import('./Component/Showdetailss'));
@@ -18,37 +19,39 @@ const LikedMoviesList = lazy(() => import('./Component/LikedMoviesList'));
 
 function App() {
   return (
-      <div className="w-screen m-0 overflow-hidden flex bg-black dark:bg-green-50">
-    <Router>
-      <ScrollToTop />
-      <ToastContainer 
-        position="top-right" 
-        autoClose={2000} 
-        hideProgressBar={false} 
-        newestOnTop={false} 
-        closeOnClick 
-        pauseOnFocusLoss 
-        draggable 
-        pauseOnHover 
-        theme="dark"
-        toastClassName="bg-black text-white dark:bg-green-50 dark:text-black rounded-xl shadow-lg font-bold text-sm md:text-base"
-        bodyClassName="flex items-center"
-      />
-      <Suspense fallback={<Loading />}>
-        <Routes>
+    <div className="w-screen m-0 overflow-hidden flex bg-black dark:bg-green-50">
+      <Router>
+        <ScrollToTop />
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          toastClassName="bg-black text-white dark:bg-green-50 dark:text-black rounded-xl shadow-lg font-bold text-sm md:text-base"
+          bodyClassName="flex items-center"
+        />
+        <Suspense fallback={<Loading />}>
+          <Routes>
 
-          <Route path="/" element={<Signin />} />
-          <Route path="/signup" element={<CreateAccount />} />
-           <Route path="/userintrest" element={<Userintrest />} />
-          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route path="/Home" element={<Home/>} />
-            <Route path="/detaills/:id" element={<Showdetaills />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/likedatas" element={<LikedMoviesList />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </Router>
+            <Route path="/" element={<Signin />} />
+
+            <Route path="/signup" element={<CreateAccount />} />
+            <Route path="/userintrest" element={<Userintrest />} />
+            <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+              <Route path="/Home" element={<Home />} />
+              <Route path="/detaills/:id" element={<Showdetaills />} />
+              <Route path="/userprofile" element={<Userprofile/>} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/likedatas" element={<LikedMoviesList />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </Router>
     </div>
   );
 }

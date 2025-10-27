@@ -83,7 +83,7 @@ const handleLogout = () => {
         </div>
 
         <div className='flex flex-col items-center space-y-6 mb-4'>
-          <Link>
+            <Link to='/userprofile' onClick={handleMobileClick}>
             <FaUser
               onClick={handleMobileClick}
               className='text-white hover:text-neutral-500 dark:text-black text-2xl cursor-pointer'

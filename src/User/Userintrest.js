@@ -22,6 +22,8 @@ function UserInterest() {
     }
 
     const parsed = JSON.parse(savedData);
+    console.log(parsed);
+    
     setUserData(parsed);
   }, [navigate, users]);
 
@@ -40,6 +42,8 @@ function UserInterest() {
     }
 
     const userObj = { ...userData, language: label };
+    console.log(userObj);
+    
 
     try {
       dispatch(signupUser(userObj));
