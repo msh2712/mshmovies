@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const API_KEY = 'bf4a036962ea83228b010b427be3d521';
 
-// Calculate last 10 days range
 const today = new Date();
 const past10Days = new Date();
 past10Days.setDate(today.getDate() - 10);
@@ -13,18 +12,12 @@ export const fetchUpcomingMovies = createAsyncThunk(
   'upcoming/fetchUpcomingMovies',
   async (lang, thunkAPI) => {
     try {
-      let allMovies = [];
-      let page = 1;
-      const totalPages = 2; // To cover roughly 40 movies if 20 per page
-
-      while (page <= totalPages) {
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&primary_release_date.gte=${formatDate(past10Days)}&primary_release_date.lte=${formatDate(today)}&sort_by=primary_release_date.asc&page=${page}`);
-        const data = await response.json();
-        allMovies = allMovies.concat(data.results);
-        page++;
-      }
-
-      return allMovies; 
+      // Fetch only the first page
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=${lang}&primary_release_date.gte=${formatDate(past10Days)}&primary_release_date.lte=${formatDate(today)}&sort_by=primary_release_date.asc&page=1`
+      );
+      const data = await response.json();
+      return data.results; // return only first page results
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
