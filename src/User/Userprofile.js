@@ -45,7 +45,7 @@ const Userprofile = () => {
                 </div>
 
                 {/* Left Content - Text */}
-                <div className="h-full md:mt-3 text-center md:text-start">
+                <div className="h-full md:mt-3 mb-4 md:mb-0 px-3 text-center md:text-start">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                         <span className="text-gradient">{users || "User555"}</span>
                     </h1>
