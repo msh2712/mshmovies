@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -16,50 +16,42 @@ import { toast } from "react-toastify";
 function SliderCopy({ title, movies, loading, error }) {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const likedMovies = useSelector((state) => state.likedMovies.liked);
-
-  // Memoized set of liked movie IDs for faster lookup
-  const likedMovieIds = useMemo(
-    () => new Set(likedMovies.map((m) => m.id)),
-    [likedMovies]
-  );
-
-  // Memoized function to check if a movie is liked
-  const isMovieLiked = useCallback(
-    (movieId) => likedMovieIds.has(movieId),
-    [likedMovieIds]
-  );
-
-  // Memoized like toggle handler
-  const handleLikeToggle = useCallback(
-    (movie) => {
-      const alreadyLiked = isMovieLiked(movie.id);
-      dispatch(toggleLike(movie));
-
-      if (alreadyLiked) {
-        toast.error(`${movie.title || movie.name} removed from Like Movies`);
-      } else {
-        toast.success(`${movie.title || movie.name} added to Like Movies`);
-      }
-    },
-    [dispatch, isMovieLiked]
-  );
-
-  // Memoized show handler
-  const handleShow = useCallback(
-    (id) => {
-      dispatch(setMovieId(id));
-      localStorage.setItem("selectedMovieId", id);
-      navigate(`/detaills/${id}`);
-    },
-    [dispatch, navigate]
-  );
 
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500 px-6">Error: {error}</p>;
+
+  const likedMovieIds = new Set(likedMovies.map((m) => m.id));
+
+  const handleLikeToggle = (movie) => {
+    const alreadyLiked = likedMovieIds.has(movie.id);
+    dispatch(toggleLike(movie));
+
+    if (alreadyLiked) {
+      toast.error(`${movie.title || movie.name} removed from Like Movies`);
+    } else {
+      toast.success(`${movie.title || movie.name} added to Like Movies`);
+    }
+  };
+
+  const handleShow = (id) => {
+    dispatch(setMovieId(id));
+    localStorage.setItem("selectedMovieId", id);
+    navigate(`/detaills/${id}`);
+  };
+
+  useEffect(() => {
+    if (swiperInstance) {
+      swiperInstance.params.navigation.prevEl = prevRef.current;
+      swiperInstance.params.navigation.nextEl = nextRef.current;
+      swiperInstance.navigation.init();
+      swiperInstance.navigation.update();
+    }
+  }, [swiperInstance]);
 
   return (
     <div className="bg-black dark:bg-green-50 text-white dark:text-black ps-0 md:ps-16 pr-0 md:pr-4 relative">
@@ -72,6 +64,7 @@ function SliderCopy({ title, movies, loading, error }) {
       <div className="max-w-screen-xl mx-auto px-4 relative z-0">
         <Swiper
           modules={[Navigation, Autoplay]}
+          onSwiper={setSwiperInstance}
           autoplay={{ delay: 2500, disableOnInteraction: false }}
           loop={true}
           spaceBetween={20}
@@ -80,14 +73,6 @@ function SliderCopy({ title, movies, loading, error }) {
             640: { slidesPerView: 2 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 5 },
-          }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
           }}
           className="!overflow-visible"
         >
@@ -112,9 +97,9 @@ function SliderCopy({ title, movies, loading, error }) {
                     handleLikeToggle(movie);
                   }}
                   className="absolute right-4 top-4 text-xl cursor-pointer z-50"
-                  title={isMovieLiked(movie.id) ? "Unlike" : "Like"}
+                  title={likedMovieIds.has(movie.id) ? "Unlike" : "Like"}
                 >
-                  {isMovieLiked(movie.id) ? (
+                  {likedMovieIds.has(movie.id) ? (
                     <BsHeartFill className="text-red-500 animate-[spin_4s_linear_infinite]" />
                   ) : (
                     <FcLikePlaceholder />
@@ -148,5 +133,4 @@ function SliderCopy({ title, movies, loading, error }) {
   );
 }
 
-// Wrap component with React.memo for memoization
-export default React.memo(SliderCopy);
+export default SliderCopy;
