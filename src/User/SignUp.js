@@ -222,7 +222,7 @@ function CreateAccount() {
 
           {/* Sign In Link Only */}
           <div className="flex justify-end items-start ps-5 font-semibold text-gray-400 text-sm">
-            <Link to="/">
+            <Link to="/sigin">
               <div className="pe-8 font-des text-base cursor-pointer hover:text-yellow-400">
                 Sign In
               </div>

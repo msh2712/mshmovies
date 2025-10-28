@@ -38,12 +38,11 @@ function App() {
         <Suspense fallback={<Loading />}>
           <Routes>
 
-            <Route path="/" element={<Signin />} />
-
+            <Route path="/sigin" element={<Signin />} />
             <Route path="/signup" element={<CreateAccount />} />
             <Route path="/userintrest" element={<Userintrest />} />
             <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-              <Route path="/Home" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/detaills/:id" element={<Showdetaills />} />
               <Route path="/userprofile" element={<Userprofile/>} />
               <Route path="/search" element={<SearchPage />} />
