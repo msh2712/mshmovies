@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
   console.log(location)
 
   useEffect(() => {
-    if (isAuthenticated && (location.pathname === "/sinin" || location.pathname === "/signup")) {
+    if (isAuthenticated && (location.pathname === "/signin" || location.pathname === "/signup")) {
       navigate("/", { replace: true });
     }
   }, [isAuthenticated, location.pathname, navigate]);
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
     return children;
   }
   if (!isAuthenticated) {
-    return <Navigate to="/sigin" replace />;
+    return <Navigate to="/signin" replace />;
   }
 
   return children;
