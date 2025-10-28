@@ -4,7 +4,7 @@ import SliderMain from './SliderMain';
 
 function Home() {
   return (
-     <div className='w-full pb-9'>
+     <div className='w-full pb-9 bg-black dark:bg-green-50'>
     <Swiperslider/>
     <SliderMain/>
   </div>

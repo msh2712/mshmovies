@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function CreateAccount() {
   const navigate = useNavigate();
-  const users = useSelector((state) => state.user.users); 
+  const users = useSelector((state) => state.user.users);
 
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
@@ -17,9 +17,8 @@ function CreateAccount() {
   const [emailExists, setEmailExists] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(null);
-  const [agree, setAgree] = useState(false);
 
- const validateUsername = (name) => name.trim() !== "";
+  const validateUsername = (name) => name.trim() !== "";
 
   const validateEmail = (email) => {
     const basicValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -71,8 +70,8 @@ function CreateAccount() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password || !agree) {
-     toast.error("Please fill all fields.");
+    if (!username || !email || !password) {
+      toast.error("Please fill all fields.");
       return;
     }
 
@@ -119,6 +118,7 @@ function CreateAccount() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Username Field */}
           <div className="relative">
             <input
               type="text"
@@ -146,6 +146,7 @@ function CreateAccount() {
             </p>
           )}
 
+          {/* Email Field */}
           <div className="relative">
             <input
               type="email"
@@ -184,6 +185,7 @@ function CreateAccount() {
             </p>
           )}
 
+          {/* Password Field */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -218,16 +220,8 @@ function CreateAccount() {
             </p>
           )}
 
-          <div className="flex justify-between items-start ps-5 space-x-2 font-semibold text-gray-400 text-sm">
-            <div className="flex">
-              <input
-                type="checkbox"
-                checked={agree}
-                onChange={(e) => setAgree(e.target.checked)}
-                className="mt-1 me-2 accent-yellow-400"
-              />
-              <span className="text-gray-600">Remember me</span>
-            </div>
+          {/* Sign In Link Only */}
+          <div className="flex justify-end items-start ps-5 font-semibold text-gray-400 text-sm">
             <Link to="/">
               <div className="pe-8 font-des text-base cursor-pointer hover:text-yellow-400">
                 Sign In
@@ -235,6 +229,7 @@ function CreateAccount() {
             </Link>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-yellow-400 font-kids text-black py-3 rounded-full hover:bg-yellow-300 transition"

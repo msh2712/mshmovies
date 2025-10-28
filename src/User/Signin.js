@@ -1,12 +1,14 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaEye, FaEyeSlash, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
+import { loginUser } from "./../Reduxtoolkit/userSlice"; // ✅ import your action
 import "react-toastify/dist/ReactToastify.css";
 
 function Signin() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -29,60 +31,56 @@ function Signin() {
     return lengthCheck && letterCheck && numberCheck && specialCharCheck;
   }, []);
 
-  const handleEmailChange = useCallback(
-    (e) => {
-      const input = e.target.value.toLowerCase();
-      setEmail(input);
-      setEmailValid(validateEmail(input));
-    },
-    [validateEmail]
-  );
+  const handleEmailChange = (e) => {
+    const input = e.target.value.toLowerCase();
+    setEmail(input);
+    setEmailValid(validateEmail(input));
+  };
 
-  const handlePasswordChange = useCallback(
-    (e) => {
-      const input = e.target.value;
-      setPassword(input);
-      setPasswordValid(validatePassword(input));
-    },
-    [validatePassword]
-  );
+  const handlePasswordChange = (e) => {
+    const input = e.target.value;
+    setPassword(input);
+    setPasswordValid(validatePassword(input));
+  };
 
-  const handleSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      if (!email || !password) {
-        toast.error("Please fill all fields.");
-        return;
-      }
+    if (!email || !password) {
+      toast.error("Please fill all fields.");
+      return;
+    }
 
-      if (!emailValid) {
-        toast.error("Enter a valid email (must end with @gmail.com).");
-        return;
-      }
+    if (!emailValid) {
+      toast.error("Enter a valid email (must end with @gmail.com).");
+      return;
+    }
 
-      if (!passwordValid) {
-        toast.error(
-          "Password must be at least 6 characters and include a letter, number, and special character."
-        );
-        return;
-      }
-
-      const user = users.find(
-        (u) => u.email.toLowerCase() === email && u.password === password
+    if (!passwordValid) {
+      toast.error(
+        "Password must be at least 6 characters and include a letter, number, and special character."
       );
+      return;
+    }
 
-      if (user) {
+    const user = users.find(
+      (u) => u.email.toLowerCase() === email && u.password === password
+    );
+
+    if (user) {
+      try {
+        // ✅ Dispatch Redux action
+        dispatch(loginUser({ email, password }));
+
         toast.success("Login successful!");
-        setTimeout(() => {
-          navigate("/Home");
-        }, 1500);
-      } else {
-        toast.error("Email or password do not match!");
+        setTimeout(() => navigate("/Home"), 1500); // slight delay for toast
+      } catch (error) {
+        toast.error(error.message || "Login failed!");
       }
-    },
-    [email, password, emailValid, passwordValid, users, navigate]
-  );
+    } else {
+      toast.error("Email or password do not match!");
+    }
+  };
 
   return (
     <div
@@ -100,7 +98,7 @@ function Signin() {
           Sign <span className="animate-colorChange">In</span>
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div className="relative">
             <input
               type="email"
@@ -174,6 +172,7 @@ function Signin() {
           </div>
 
           <button
+            onClick={handleSubmit}
             type="submit"
             className="w-full bg-yellow-400 font-kids py-3 rounded-full hover:bg-yellow-300 transition"
           >
