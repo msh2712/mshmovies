@@ -39,12 +39,10 @@ function App() {
         <Suspense fallback={<Loading />}>
           <Routes>
 
-            {/* Public Routes */}
             <Route path="/signin" element={<PublicRoute><Signin /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><CreateAccount /></PublicRoute>} />
             <Route path="/userintrest" element={<PublicRoute><Userintrest /></PublicRoute>} />
 
-            {/* Protected Routes */}
             <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
               <Route path="/" element={<Home />} />
               <Route path="/detaills/:id" element={<Showdetaills />} />
