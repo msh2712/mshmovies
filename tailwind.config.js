@@ -28,9 +28,9 @@ module.exports = {
           '50%': { transform: 'translateY(-15px)' },
         },
         colorChange: {
-          '0%':   { color: '#d9f99d' },  // lime-200
-          '25%':  { color: '#ddd6fe' },  // violet-200
-          '50%':  { color: '#99f6e4' },  // teal-200
+          '0%':   { color: '#d9f99d' },  
+          '25%':  { color: '#ddd6fe' }, 
+          '50%':  { color: '#99f6e4' },  
           '75%':  { color: '#f5d0fe' },  // fuchsia-200
           '100%': { color: '#d9f99d' },  // back to lime-200
         },

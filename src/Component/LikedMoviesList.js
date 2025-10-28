@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IoHeartDislike } from "react-icons/io5";
+import { FaHeartCrack } from "react-icons/fa6";
 import { toggleLike } from "../Reduxtoolkit/likedMoviesSlice";
 import { useNavigate } from "react-router-dom"
 import { setMovieId } from "../Reduxtoolkit/fetchMovieById";
@@ -67,9 +67,11 @@ function LikedMoviesList() {
                 e.stopPropagation();
                 handleLikeToggle(movie)
               }} className="absolute top-3 right-4 ">
-                <IoHeartDislike className="size-5 text-red-500 hover:animate-bounce" />
+<FaHeartCrack
+  className="w-6 h-6 text-red-500 transition-transform duration-300 ease-in-out 
+             hover:scale-125 hover:-translate-y-1"
+/>
               </button>
-
             </div>
           </div>
         ))}

@@ -19,7 +19,7 @@ const LikedMoviesList = lazy(() => import('./Component/LikedMoviesList'));
 
 function App() {
   return (
-    <div className="w-screen m-0 overflow-hidden flex bg-black dark:bg-green-50">
+    <div className="w-screen m-0 overflow-hidden flex">
       <Router>
         <ScrollToTop />
         <ToastContainer
