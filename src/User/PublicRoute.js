@@ -18,9 +18,8 @@ const PublicRoute = ({ children }) => {
     }
   }, [isAuthenticated, location.pathname, navigate]);
 
-  if (isAuthenticated && (location.pathname === "/signin" || location.pathname === "/signup")) {
-    return null; 
-  }
+ 
+  
 
   return children;
 };
