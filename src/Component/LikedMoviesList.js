@@ -67,10 +67,10 @@ function LikedMoviesList() {
                 e.stopPropagation();
                 handleLikeToggle(movie)
               }} className="absolute top-3 right-4 ">
-<FaHeartCrack
-  className="w-6 h-6 text-red-500 transition-transform duration-300 ease-in-out 
+                <FaHeartCrack
+                  className="w-6 h-6 text-red-500 transition-transform duration-300 ease-in-out 
              hover:scale-125 hover:-translate-y-1"
-/>
+                />
               </button>
             </div>
           </div>

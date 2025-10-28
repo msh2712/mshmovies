@@ -47,7 +47,7 @@ function UserInterest() {
 
     try {
       dispatch(signupUser(userObj));
-      setTimeout(() => navigate("/"), 1500);
+        setTimeout(() => navigate("/", { replace: true }), 1500);
     } catch (error) {
       toast.error(error.message || "Signup failed!");
     }

@@ -63,9 +63,9 @@ function Header() {
         md:translate-x-0`}
       >
         <div className='flex flex-col items-center space-y-6 mt-2 gap-y-3'>
-          <Link to='/Home'><img className='size-10' src='/MshLogo.png' alt='Logo' /></Link>
+          <Link to='/'><img className='size-10' src='/MshLogo.png' alt='Logo' /></Link>
 
-          <Link to='/Home' onClick={handleMobileClick}>
+          <Link to='/' onClick={handleMobileClick}>
             <FaHome className='text-white hover:text-neutral-500 dark:text-black text-2xl cursor-pointer' />
           </Link>
 

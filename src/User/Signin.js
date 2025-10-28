@@ -69,11 +69,9 @@ function Signin() {
 
     if (user) {
       try {
-        // ✅ Dispatch Redux action
         dispatch(loginUser({ email, password }));
-
         toast.success("Login successful!");
-        setTimeout(() => navigate("/"), 1500); // slight delay for toast
+         setTimeout(() => navigate("/", { replace: true }), 1500); 
       } catch (error) {
         toast.error(error.message || "Login failed!");
       }

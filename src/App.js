@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Signin from './User/Signin';
 import ProtectedRoute from './User/ProtectedRoute';
+import PublicRoute from './User/PublicRoute';
 import Layout from './User/Layout';
 import Userprofile from './User/Userprofile';
 
@@ -38,16 +39,20 @@ function App() {
         <Suspense fallback={<Loading />}>
           <Routes>
 
-            <Route path="/sigin" element={<Signin />} />
-            <Route path="/signup" element={<CreateAccount />} />
-            <Route path="/userintrest" element={<Userintrest />} />
+            {/* Public Routes */}
+            <Route path="/signin" element={<PublicRoute><Signin /></PublicRoute>} />
+            <Route path="/signup" element={<PublicRoute><CreateAccount /></PublicRoute>} />
+            <Route path="/userintrest" element={<PublicRoute><Userintrest /></PublicRoute>} />
+
+            {/* Protected Routes */}
             <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
               <Route path="/" element={<Home />} />
               <Route path="/detaills/:id" element={<Showdetaills />} />
-              <Route path="/userprofile" element={<Userprofile/>} />
+              <Route path="/userprofile" element={<Userprofile />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/likedatas" element={<LikedMoviesList />} />
             </Route>
+
           </Routes>
         </Suspense>
       </Router>
