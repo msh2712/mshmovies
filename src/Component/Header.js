@@ -26,7 +26,7 @@ function Header() {
   const handleLogout = () => {
     dispatch(closeSidebar());
     dispatch(logoutUser());
-    navigate('/');
+    navigate('/signin');
   };
 
 
