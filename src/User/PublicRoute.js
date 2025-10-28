@@ -10,11 +10,7 @@ const PublicRoute = ({ children }) => {
 
  useEffect(() => {
   if (isAuthenticated && (location.pathname === "/signin" || location.pathname === "/signup")) {
-    toast.info("You are already logged in! Redirecting to home...", { autoClose: 1500 });
-    const timer = setTimeout(() => {
-      navigate("/", { replace: true });
-    }, 1600); // wait slightly longer than autoClose
-    return () => clearTimeout(timer);
+     navigate("/", { replace: true });
   }
 }, [isAuthenticated, location.pathname, navigate]);
 
