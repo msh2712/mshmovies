@@ -13,7 +13,7 @@ const PublicRoute = ({ children }) => {
       toast.info("You are already logged in! Redirecting to home...");
       const timer = setTimeout(() => {
         navigate("/", { replace: true });
-      }, 1500);
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated, location.pathname, navigate]);
