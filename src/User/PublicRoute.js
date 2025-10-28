@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PublicRoute = ({ children }) => {
@@ -17,6 +17,8 @@ const PublicRoute = ({ children }) => {
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated, location.pathname, navigate]);
+
+
 
  
   
