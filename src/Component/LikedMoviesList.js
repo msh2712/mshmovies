@@ -33,7 +33,7 @@ function LikedMoviesList() {
 
   return (
     <div className="dark:bg-green-50 bg-zinc-950 text-white dark:text-black w-screen min-h-screen p-4 md:ps-24 md:pr-8 ">
-      <Heading heading="FAVORITES MOVIES" />
+      <Heading heading="LIKED MOVIES" />
       <div className="flex flex-col gap-6">
         {likedMovies.map((movie) => (
           <div
