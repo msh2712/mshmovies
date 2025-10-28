@@ -73,7 +73,7 @@ function Signin() {
         dispatch(loginUser({ email, password }));
 
         toast.success("Login successful!");
-        setTimeout(() => navigate("/Home"), 1500); // slight delay for toast
+        setTimeout(() => navigate("/"), 1500); // slight delay for toast
       } catch (error) {
         toast.error(error.message || "Login failed!");
       }
