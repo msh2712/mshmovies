@@ -48,7 +48,7 @@ const ShowDetails = () => {
 
             <div>
                 <div className='relative md:hidden m-4 mb-0 opacity-100 text-xl'>
-                    <Heading heading="LIKED" />
+                    <Heading heading="MOVIE DETAILS"/>
                 </div>
 
                 <div className="relative md:ps-32 z-10 flex flex-col md:flex-row items-center md:items-start px-6 pb-14 md:pt-16 md:px-0 max-w-7xl mx-auto">
@@ -156,3 +156,4 @@ const ShowDetails = () => {
 };
 
 export default ShowDetails;
+
